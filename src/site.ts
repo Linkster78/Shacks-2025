@@ -1,4 +1,6 @@
+
 import './index.css';
+import * as fs from 'fs';
 
 console.log(window.rats);
 
@@ -17,13 +19,6 @@ document.getElementById('close')?.addEventListener('click', () => {
     window.electronAPI.close();
 });
 
-
-const element = document.getElementById('content');
-console.log('Searching for element with id "content"...');
-if (element) {
-    console.log('Element found:', element);
-}
-
 export function addNavBar() {
     if (!isQuestionning) {
         document.body.insertAdjacentHTML('afterbegin', `
@@ -39,4 +34,46 @@ export function addNavBar() {
     <br><br>
   `);
     }
+}
+
+interface Question {
+    type: string;
+    title: string;
+    choices: string[];
+    correctAnswer: Int32Array;
+}
+
+export async function getRandomQuestion(): Promise<void> {
+    const files = await window.rats.getFiles('src/questions');
+
+    const randomNumber: number = Math.random() * files.length; // probably to change
+
+    const filePath = files.at(randomNumber);
+
+    try {
+        const content: string = window.rats.readFile(filePath!);
+        const question: Question = JSON.parse(content);
+
+        const element = document.getElementById('question');
+        element.innerHTML += `<h3>${question.title}</h3><br>`;
+
+        if (question.type == "multiple_choice") {
+            question.choices.forEach(q => {
+                element.innerHTML += `<button type="button">${q}</button><br><br>`;
+            });
+        }
+        else if (question.type == "short_answer") {
+            element.innerHTML += `<label for="resp">Response:</label>
+            <input type="text" id="resp" name="resp"><br><br>
+            <input type="submit" value="Submit"><style>#resp
+            {
+                height:200px;
+                font-size:14pt;
+            }</style>`;
+        }
+
+    } catch (error) {
+        console.error("Error reading file synchronously:", error);
+    }
+
 }
