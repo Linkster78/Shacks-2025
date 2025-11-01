@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Drumroll please 🥁🥁🥁</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+  <style>
+    .center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .marker {
+      position: absolute;
+      z-index: 1;
+
+      width: 2rem;
+      height: 2rem;
+
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+
+      background-color: #2196f3;
+    }
+
+    .wheel {
+      background-color: #f5f5f5;
+      border: solid .5rem #212121;
+
+      width: 40rem;
+      height: 40rem;
+      padding: 0;
+
+      border-radius: 50%;
+
+      overflow: hidden;
+      position: relative;
+
+      transition: transform 4s cubic-bezier(0, 0.5, 0.5, 1);
+    }
+
+    .wheel>li {
+      position: absolute;
+      list-style: none;
+
+      color: #212121;
+      font-weight: 600;
+
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+
+      top: calc(50% - 5.5rem);
+      width: 50%;
+      height: 11rem;
+
+      transform-origin: 100% 50%;
+
+      padding-left: 1rem;
+      box-sizing: border-box;
+
+      display: flex;
+      align-items: center;
+    }
+
+    .wheel>li:nth-child(2n) {
+      background-color: #e53935;
+    }
+
+    .wheel>li:nth-child(2n+1) {
+      background-color: #f5f5f5;
+    }
+
+    /* Merci Ben */
+    .wheel>li:nth-child(1) {
+      transform: rotate(0deg);
+    }
+
+    .wheel>li:nth-child(2) {
+      transform: rotate(30deg);
+    }
+
+    .wheel>li:nth-child(3) {
+      transform: rotate(60deg);
+    }
+
+    .wheel>li:nth-child(4) {
+      transform: rotate(90deg);
+    }
+
+    .wheel>li:nth-child(5) {
+      transform: rotate(120deg);
+    }
+
+    .wheel>li:nth-child(6) {
+      transform: rotate(150deg);
+    }
+
+    .wheel>li:nth-child(7) {
+      transform: rotate(180deg);
+    }
+
+    .wheel>li:nth-child(8) {
+      transform: rotate(210deg);
+    }
+
+    .wheel>li:nth-child(9) {
+      transform: rotate(240deg);
+    }
+
+    .wheel>li:nth-child(10) {
+      transform: rotate(270deg);
+    }
+
+    .wheel>li:nth-child(11) {
+      transform: rotate(300deg);
+    }
+
+    .wheel>li:nth-child(12) {
+      transform: rotate(330deg);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="center">
+    <div class="marker"></div>
+    <ul class="wheel" id="wheel">
+      <li>Perdu!</li>
+      <li>5$</li>
+      <li>Un "hourra" enthousiaste</li>
+      <li>10$</li>
+      <li>Perdu!</li>
+      <li>20$</li>
+      <li>Un chapeau de pieuvre</li>
+      <li>Un très gros toutou de Mario</li>
+      <li>2$</li>
+      <li>Perdu!</li>
+      <li>3$</li>
+      <li>Un billet d'accès au parc</li>
+    </ul>
+  </div>
+
+  <script src="https://confettijs.org/confetti.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script type="module">
+    const wheel = document.getElementById('wheel');
+
+    (async () => {
+      wheel.style.transition = 'none';
+      wheel.style.transform = 'rotate(0deg)';
+
+      setTimeout(() => {
+        const newAngle = 1800 - 270 - 5 * 30 + (Math.random() - 0.5) * 30;
+        wheel.style.transition = 'transform 4s cubic-bezier(0, 0.5, 0.5, 1)';
+        wheel.style.transform = `rotate(${newAngle}deg)`;
+      }, 10);
+
+      setTimeout(() => {
+        const confetti = new Confetti('wheel');
+        confetti.setCount(100);
+        confetti.setSize(1.5);
+        confetti.setPower(25);
+        confetti.destroyTarget(false);
+
+        setTimeout(() => {
+          const wheelRect = wheel.getBoundingClientRect();
+          wheel.dispatchEvent(new MouseEvent('click', { clientX: wheelRect.x + wheelRect.width / 2, clientY: wheelRect.y + wheelRect.height / 2 }));
+          confetti.setCount(0);
+
+          Toastify({
+            text: 'you won or something!',
+            duration: 3000,
+            newWindow: true,
+            close: false,
+            gravity: 'bottom',
+            position: 'center',
+            stopOnFocus: true
+          }).showToast();
+        }, 10);
+      }, 4000);
+    })();
+  </script>
+</body>

@@ -26,6 +26,7 @@ export function addNavBar() {
           <li><a class="nav-item nav-link" href="">Main</a></li>
           <li><a class="nav-item nav-link" href="src/sniff.html">Sniff Sniff😢</a></li>
           <li><a class="nav-item nav-link" href="src/stats.html">Statistics</a></li>
+          <li><a class="nav-item nav-link" href="src/roulette.html">Roulette</a></li>
         </ul>
       </div>
     </nav>
