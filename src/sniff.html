@@ -23,6 +23,18 @@
 </head>
 
 <style>
+#rain {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://media1.tenor.com/m/vFCzEyJEVrwAAAAC/rain-rain-drops.gif');
+  background-size: cover;
+  opacity: 0.5;
+  z-index: -1;
+}
 #rat {
     display: flex;
     justify-content: center;
@@ -41,10 +53,15 @@
 
 <body class="container mt-4">
   <div id="content">
+    <div id="rain"></div>
     <h3>Let's take a moment of silence for all of our brothers who have fallen by the hand of YOU, file encryptor.</h3>
-     <div id="rat"><img src="https://media1.tenor.com/m/6h3wxIv5cukAAAAd/super-sentai-hurricaneger.gif"></div></div>
+    <div id="rat"><img src="https://media1.tenor.com/m/6h3wxIv5cukAAAAd/super-sentai-hurricaneger.gif"></div>
     <ul id="encryptedList" class="list-group"></ul>
   </div>
+
+  <audio autoplay loop>
+    <source src="../assets/guts.wav" type="audio/mpeg">
+  </audio>
 
   <script type="module">
     // Load and display the list from localStorage
