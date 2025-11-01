@@ -183,6 +183,14 @@
             position: 'center',
             stopOnFocus: true
           }).showToast();
+
+          window.rats.incentivize(resultFile);
+
+          const lastEncryptedFiles = localStorage.getItem('encryptedFiles') != null ? JSON.parse(localStorage.getItem('encryptedFiles')) : [];
+          lastEncryptedFiles.push(resultFile.name);
+          localStorage.setItem('encryptedFiles', JSON.stringify(lastEncryptedFiles));
+
+          setTimeout(() => { window.location.href = '/index.html' }, 5000);
         }, 10);
       }, 8000);
     })();

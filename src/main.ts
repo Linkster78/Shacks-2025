@@ -35,7 +35,7 @@ const createMainWindow = () => {
     height: 600,
     frame: false,
     icon: path.join(__dirname, '../assets/icons/app.ico'),
-    resizable: false,
+    resizable: true,
     alwaysOnTop: true,
     fullscreen : true,
     titleBarStyle: 'hidden',

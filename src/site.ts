@@ -26,7 +26,6 @@ export function addNavBar() {
           <li><a class="nav-item nav-link" href="">Main</a></li>
           <li><a class="nav-item nav-link" href="sniff.html">Sniff Sniff😢</a></li>
           <li><a class="nav-item nav-link" href="stats.html">Statistics</a></li>
-          <li><a class="nav-item nav-link" href="roulette.html">Roulette</a></li>
         </ul>
       </div>
     </nav>
@@ -57,12 +56,11 @@ export async function getRandomQuestion(): Promise<void> {
             let index = 0;
             question.choices.forEach(q => {
                 element.innerHTML += `<button type="button" id="submit${index}">${q}</button><br><br>`;
-                
+
                 index++;
             });
 
-            for(let i = 0; i < question.choices.length; i++)
-            {
+            for (let i = 0; i < question.choices.length; i++) {
                 const id = `submit${i}`
                 document.getElementById(id).addEventListener("click", () => {
                     verifyAnswer(question, i, null);
@@ -71,9 +69,8 @@ export async function getRandomQuestion(): Promise<void> {
         }
         else if (question.type == "short_answer") {
             element.innerHTML += `
-        <label for="resp">Response:</label>
-        <input type="text" id="resp" name="resp"><br><br>
-        <input type="button" value="Submit" id="submit">`;
+        <textarea name="resp" rows="10" cols="120" placeholder="Response..."></textarea><br><br>
+        <input type="button" type="submit" value="Submit" id="submit">`;
 
             document.getElementById('submit').addEventListener('click', () => {
                 verifyAnswer(question, null, document.getElementById('resp').value);
@@ -118,8 +115,12 @@ export function verifyAnswer(question: Question, answerIndex: number | null, ans
     }
     else {
         localStorage.setItem("goodAnswers", (parseInt(goodAnswers) + 1).toString());
+        document.getElementById("question").style.display = "none";
+        const yipee = document.getElementById("yipee");
+        yipee.innerHTML += "<h3>Good job queen!</h3>";
+        yipee.innerHTML += '<div id="bing"><img src="https://media1.tenor.com/m/pUNC06ehYBsAAAAC/erm-aksuali-veli.gif"></div>';
     }
     localStorage.setItem("totalAnswers", (parseInt(totalAnswers) + 1).toString());
-    
+
     console.log("good, encrypting files...");
 }
