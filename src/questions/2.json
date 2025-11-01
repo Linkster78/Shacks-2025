@@ -1,0 +1,11 @@
+{
+    "type": "multiple_choice",
+    "title": "While you were taking a stroll through the office, you notice that the laptop of your coworker John is unattended and unlocked. What should you do?",
+    "choices": [
+        "Nothing.",
+        "Call out John's name and kick the laptop towards the wall.",
+        "Dump your lunch on it.",
+        "Send a humoristic message announcing that he will be buying the team a round of donuts."
+    ],
+    "correct_answers": [0]
+}

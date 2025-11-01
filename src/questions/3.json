@@ -1,0 +1,11 @@
+{
+    "type": "multiple_choice",
+    "title": "After parking your car, you approach the front door of the office and you face a coworker. His arms are filled with files and as such, he asks you to open the door for him. What should you do?",
+    "choices": [
+        "Open the door, enter the building and close the door behind you.",
+        "Offer to carry half of his things.",
+        "Open the door for him.",
+        "Spill your coffee on him."
+    ],
+    "correct_answers": [0, 1]
+}

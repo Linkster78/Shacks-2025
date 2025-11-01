@@ -1,0 +1,9 @@
+{
+    "type": "multiple_choice",
+    "title": "You have just received an email from a nigerian prince. He needs <strong>your</strong> help to move a large sum of money. Will you help him?",
+    "choices": [
+        "Absolutely not.",
+        "Of course!"
+    ],
+    "correct_answers": [0]
+}

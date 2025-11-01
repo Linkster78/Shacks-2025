@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'node:path';
+import fs from 'node:fs';
 import started from 'electron-squirrel-startup';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -8,75 +9,106 @@ if (started) {
 }
 
 let mainWindow: BrowserWindow | null = null;
+let popupWindow: BrowserWindow | null = null;
 
-const createWindow = () => {
-  // Create the browser window.
+// Path to the user data file
+const dataPath = path.join(app.getPath('userData'), 'data.json');
+
+function readLaunchData(): { launchCount: number } {
+  try {
+    const data = fs.readFileSync(dataPath, 'utf-8');
+    return JSON.parse(data);
+  } catch {
+    return { launchCount: 0 };
+  }
+}
+
+function saveLaunchData(data: { launchCount: number }) {
+  fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
+}
+
+const createMainWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    frame: false, // removes the default OS frame and buttons
-    titleBarStyle: 'hidden', // optional (macOS-specific)
-    titleBarOverlay: false, // (optional) disables title overlay
+    frame: false,
+    titleBarStyle: 'hidden',
+    titleBarOverlay: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      sandbox: false
+      sandbox: false,
     },
   });
 
-  // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
     mainWindow.loadFile(
-      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
+      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
     );
   }
-
- // mainWindow?.webContents.openDevTools();
-
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+const createFirstTimeWindow = () => {
+  popupWindow = new BrowserWindow({
+    width: 690,
+    height: 420,
+    frame: false,
+    resizable: false,
+    minimizable: false,
+    maximizable: false,
+    alwaysOnTop: true,
+    modal: true,
+    parent: mainWindow ?? undefined,
+    transparent: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      sandbox: false,
+    },
+  });
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    popupWindow.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}/firstTime.html`);
+  } else {
+    popupWindow.loadFile(
+      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/firstTime.html`)
+    );
   }
+};
+
+app.on('ready', () => {
+  const data = readLaunchData();
+  data.launchCount += 1;
+  saveLaunchData(data);
+
+  createMainWindow();
+
+  if (data.launchCount <= 1) {
+    createFirstTimeWindow();
+  }
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit();
 });
 
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
+  if (BrowserWindow.getAllWindows().length === 0) createMainWindow();
 });
 
-
-// // Open the DevTools.
-
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
 ipcMain.on('window-control', (event, action) => {
-  const win = BrowserWindow.fromWebContents(event.sender)
-  if (!win) return
+  const win = BrowserWindow.fromWebContents(event.sender);
+  if (!win) return;
 
   switch (action) {
     case 'minimize':
-      win.minimize()
-      break
+      win.minimize();
+      break;
     case 'maximize':
-      win.isMaximized() ? win.unmaximize() : win.maximize()
-      break
+      win.isMaximized() ? win.unmaximize() : win.maximize();
+      break;
     case 'close':
-      win.close()
-      break
+      win.close();
+      break;
   }
-})
+});

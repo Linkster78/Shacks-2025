@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome!</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: transparent;
+      color: #fff;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    .popup {
+      background: #333;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+
+    button {
+      margin-top: 1rem;
+      background: #555;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="popup">
+    <h2>🐀Welcome to RATS!🐀</h2>
+    <p>RATS, also known as Randomized Awareness Training for Security is an application tailored to the needs of the younger and older generations. Is your grandma receiving shady emails, look no further than this application to train her. Is your 10 year old child scrolling too much on instagram? Again, use this app to break the doom scroll streak all the while training them on cybersecurity. This application functions in a pretty straightforward way where every 15 minutes a security question is asked to the user and they are forced to answer it. If they get the quesion right, they can continue what they were doing, if they get it wrong then a randomly selected file on their computer gets encrypted without any way of recovering it.</p>
+    <button id="close-popup">Try the encryption!</button>
+  </div>
+
+  <script>
+    document.getElementById('close-popup').addEventListener('click', async () => {
+      window.rats.incentivize((await window.rats.listIncentives(1))[0]);
+      window.close();
+    });
+  </script>
+</body>
+</html>
