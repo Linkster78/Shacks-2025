@@ -7,7 +7,7 @@ const ENCRYPTION_DIR = './to_encrypt';
 export interface Rats {
     listIncentives: (count: number) => Promise<FileEntry[]>,
     incentivize: (file: FileEntry) => void
-    getFiles: (dir: string) => Promise<string[]>,
+    getFiles: (dir: string) => Promise<FileEntry[]>,
     readFile: (path: string) => string
 }
 
