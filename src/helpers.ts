@@ -13,3 +13,10 @@ export async function getFiles(dir: string): Promise<string[]> {
     }));
     return files.reduce((a, f) => a.concat(f), []);
 }
+
+export function sampleN(els: any[], n: number) {
+    const sampled = [];
+    for(let i = 0; i < n; i++)
+        sampled.push(els[Math.floor(Math.random() * els.length)]);
+    return sampled;
+}
