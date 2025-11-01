@@ -1,9 +1,5 @@
 import { resolve, basename } from 'path';
-import { promisify } from 'util';
-import fs from 'fs';
-
-const readdir = promisify(fs.readdir);
-const stat = promisify(fs.stat);
+import fs from 'fs/promises';
 
 export type FileEntry = {
   path: string;
@@ -11,19 +7,24 @@ export type FileEntry = {
 };
 
 export async function getFiles(dir: string): Promise<FileEntry[]> {
-  const subdirs = await readdir(dir);
+  const entries = await fs.readdir(dir, { withFileTypes: true });
   const files = await Promise.all(
-    subdirs.map(async (subdir: string) => {
-      const res = resolve(dir, subdir);
-      const fileStat = await stat(res);
-      if (fileStat.isDirectory()) {
+    entries.map(async (entry) => {
+      const res = resolve(dir, entry.name);
+      if (entry.isDirectory()) {
         return getFiles(res);
-    } else {
+      } else {
         return [{ path: res, name: basename(res) }];
       }
     })
   );
-  return files.flat().filter(f => !f.name.endsWith('.enc'));
+
+  return files.flat();
+}
+
+export async function getFilesNotEncr(dir: string): Promise<FileEntry[]> {
+    const files = await getFiles(dir);
+    return files.filter(f => !f.name.endsWith('.enc'));
 }
 
 export function sampleN(els: any[], n: number) {
