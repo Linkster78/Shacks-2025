@@ -18,21 +18,24 @@ export async function getFiles(dir: string): Promise<FileEntry[]> {
       const fileStat = await stat(res);
       if (fileStat.isDirectory()) {
         return getFiles(res);
-      } else if (!res.endsWith('.enc')) {
+    } else {
         return [{ path: res, name: basename(res) }];
-      } else {
-        return [];
       }
     })
   );
   return files.flat();
 }
 
+export async function getFilesNotEncr(dir: string): Promise<FileEntry[]> {
+    const files = await getFiles(dir);
+    return files.filter(f => !f.name.endsWith('.enc'));
+}
+
 export function sampleN(els: any[], n: number) {
-    if(els.length == 0) return [];
+    if (els.length == 0) return [];
 
     const sampled = [];
-    for(let i = 0; i < n; i++)
+    for (let i = 0; i < n; i++)
         sampled.push(els[Math.floor(Math.random() * els.length)]);
     return sampled;
 }

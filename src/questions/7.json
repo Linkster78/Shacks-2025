@@ -1,0 +1,11 @@
+{
+    "type": "multiple_choice",
+    "title": "There's just too many passwords, how should you remember them all?",
+    "choices": [
+        "Utilize a password manager",
+        "Just remember them",
+        "Tatoo them on your little brother's back",
+        "Write them down on a sheet of paper, hang it publicly"
+    ],
+    "correct_answers": [0, 1]
+}

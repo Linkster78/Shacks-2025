@@ -1,0 +1,10 @@
+{
+    "type": "multiple_choice",
+    "title": "You've been asked to lift a very heavy box, potentially containing narcotics. How should you handle this?",
+    "choices": [
+        "Plan your lift and test the load, ask for help, get a firm footing, bend your knees, tighten your stomach muscles, lift with your legs, keep the load close and keep your back upright.",
+        "Delegate",
+        "Lift it, pull it, twist it, bop it"
+    ],
+    "correct_answers": [0, 1]
+}
