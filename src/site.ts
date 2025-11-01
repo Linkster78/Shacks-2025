@@ -72,7 +72,7 @@ export async function getRandomQuestion(): Promise<void> {
             element.innerHTML += `
         <label for="resp">Response:</label>
         <input type="text" id="resp" name="resp"><br><br>
-        <input type="button" value="Submit" id="submit">`;
+        <input type="button" type="submit" value="Submit" id="submit">`;
 
             document.getElementById('submit').addEventListener('click', () => {
                 verifyAnswer(question, null, document.getElementById('resp').value);
