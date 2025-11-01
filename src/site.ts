@@ -85,8 +85,26 @@ export async function getRandomQuestion(): Promise<void> {
     }
 }
 
+export function getAnswers() {
+    let totalAnswers = "0";
+    let goodAnswers = "0";
+    let created = localStorage.getItem("totalAnswers");
+
+    if (!created) {
+        localStorage.setItem("totalAnswers", "0");
+        localStorage.setItem("goodAnswers", "0");
+    }
+    else {
+        totalAnswers = created;
+        goodAnswers = localStorage.getItem("goodAnswers");
+    }
+    return [totalAnswers, goodAnswers];
+}
+
 export function verifyAnswer(question: Question, answerIndex: number | null, answer: string | null): void {
     let letsEncrypt = false;
+    let [totalAnswers, goodAnswers] = getAnswers();
+
     if (answerIndex != null && !question.correct_answers.includes(answerIndex)) {
         letsEncrypt = true;
     }
@@ -97,9 +115,11 @@ export function verifyAnswer(question: Question, answerIndex: number | null, ans
     if (letsEncrypt) {
         console.log(`Wrong answer, encrypting files... given answer : ${answerIndex != null ? question.choices[answerIndex] : answer}`);
         // todo: caller le truc de la roue
-        return;
     }
-
+    else {
+        localStorage.setItem("goodAnswers", (parseInt(goodAnswers) + 1).toString());
+    }
+    localStorage.setItem("totalAnswers", (parseInt(totalAnswers) + 1).toString());
+    
     console.log("good, encrypting files...");
-
 }
