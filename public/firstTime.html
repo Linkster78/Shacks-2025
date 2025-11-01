@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome!</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #222;
+      color: #fff;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    .popup {
+      background: #333;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+
+    button {
+      margin-top: 1rem;
+      background: #555;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="popup">
+    <h2>Welcome to My App!</h2>
+    <p>Thanks for installing — here’s a quick intro.</p>
+    <button id="close-popup">Get Started</button>
+  </div>
+
+  <script>
+    document.getElementById('close-popup').addEventListener('click', () => {
+      window.close();
+    });
+  </script>
+</body>
+</html>
