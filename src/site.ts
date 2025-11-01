@@ -52,18 +52,30 @@ export async function getRandomQuestion(): Promise<void> {
         const element = document.getElementById('question');
         element.innerHTML += `<h3>${question.title}</h3><br>`;
 
-        if (question.type == "multiple_choice") {
-            let index = 0;
-            question.choices.forEach(q => {
-                element.innerHTML += `<button type="button" id="submit${index}">${q}</button><br><br>`;
+        function shuffleArray<T>(array: T[]): T[] {
+            const arr = [...array]; // make a copy so original isn’t modified
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
 
-                index++;
+        if (question.type == "multiple_choice") {
+
+            const choicesWithIndex = question.choices.map((choice, idx) => ({ choice, idx }));
+            const shuffledChoices = shuffleArray(choicesWithIndex);
+
+            shuffledChoices.forEach(q => {
+                element.innerHTML += `<button type="button" id="submit${q.idx}">${q.choice}</button><br><br>`;
             });
 
-            for (let i = 0; i < question.choices.length; i++) {
-                const id = `submit${i}`
+            for(let i = 0; i < question.choices.length; i++)
+            {
+                const item = shuffledChoices[i];
+                const id = `submit${item.idx}`
                 document.getElementById(id).addEventListener("click", () => {
-                    verifyAnswer(question, i, null);
+                    verifyAnswer(question, item.idx, null);
                 });
             }
         }
