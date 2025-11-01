@@ -64,4 +64,6 @@ async function incentivize(file: FileEntry): Promise<void> {
   }
 }
 
-export default { listIncentives, incentivize };
+const isTimerBoot = process.argv.includes('--timer')
+
+export default { listIncentives, incentivize, isTimerBoot };
