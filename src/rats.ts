@@ -8,7 +8,8 @@ const ENCRYPTION_DIR = './';
 
 export interface Rats {
     listIncentives: (count: number) => Promise<FileEntry[]>,
-    incentivize: (file: FileEntry) => void
+    incentivize: (file: FileEntry) => void,
+    isTimerLaunch: boolean
 }
 
 async function listIncentives(count = 8): Promise<string[]> {
