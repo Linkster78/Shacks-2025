@@ -3,7 +3,6 @@ import fs from 'fs';
 
 const ENCRYPTION_DIR: string = './to_encrypt';
 
-let isQuestionning: boolean = false;
 
 export interface Rats {
     listIncentives: (count: number) => Promise<string[]>,
@@ -31,4 +30,4 @@ function incentivize(path: string): void {
     }
 }
 
-export default { listIncentives, incentivize, isQuestionning };
+export default { listIncentives, incentivize };
