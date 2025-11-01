@@ -92,4 +92,4 @@ typings/
 out/
 
 # RATS
-to_encrypt/
+src/to_encrypt/
