@@ -41,6 +41,44 @@
     height: auto;
     border-radius: 8px;
   }
+
+  button {
+    margin-top: 1rem;
+    background: #555;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #777;
+  }
+
+  .custom-window-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 9999;
+  }
+
+  .custom-window-controls button {
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .custom-window-controls button:hover {
+    background: #555;
+  }
 </style>
 
 <body class="container mt-4">
@@ -61,7 +99,7 @@
     <div id="rain"></div>
     <h3>Let's take a moment of silence for all of our brothers who have fallen by the hand of YOU, security learner.</h3>
     <div id="rat"><img src="https://media1.tenor.com/m/6h3wxIv5cukAAAAd/super-sentai-hurricaneger.gif"></div>
-    <ul id="encryptedList" class="list-group"></ul>
+    <ul id="encryptedList" class="list-group" style="margin-bottom: 4rem;"></ul>
   </div>
 
   <audio autoplay loop>
@@ -92,5 +130,21 @@
     } else {
       listContainer.innerHTML = '<li class="list-group-item text-muted">No files saved yet</li>';
     }
+    document.getElementById('minimize')?.addEventListener('click', () => {
+    window.electronAPI.minimize();
+    });
+
+    document.getElementById('maximize')?.addEventListener('click', () => {
+        window.electronAPI.maximize();
+    });
+
+    document.getElementById('close')?.addEventListener('click', () => {
+        window.electronAPI.close();
+    });
   </script>
+  <div class="custom-window-controls">
+    <button id="minimize">–</button> <!-- TODO: REMOVE IN PRODUCTION 🤡🤡🤡 -->
+    <!-- <button id="maximize">□</button> -->
+    <button id="close">×</button>
+  </div>
 </body>
