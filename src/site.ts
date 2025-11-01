@@ -24,9 +24,9 @@ export function addNavBar() {
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
           <li><a class="nav-item nav-link" href="">Main</a></li>
-          <li><a class="nav-item nav-link" href="src/sniff.html">Sniff Sniff😢</a></li>
-          <li><a class="nav-item nav-link" href="src/stats.html">Statistics</a></li>
-          <li><a class="nav-item nav-link" href="src/roulette.html">Roulette</a></li>
+          <li><a class="nav-item nav-link" href="sniff.html">Sniff Sniff😢</a></li>
+          <li><a class="nav-item nav-link" href="stats.html">Statistics</a></li>
+          <li><a class="nav-item nav-link" href="roulette.html">Roulette</a></li>
         </ul>
       </div>
     </nav>
@@ -44,14 +44,10 @@ interface Question {
 }
 
 export async function getRandomQuestion(): Promise<void> {
-    const files = await window.rats.getFiles('src/questions');
-
-    const randomNumber: number = Math.random() * files.length; // probably to change
-
-    const filePath = files.at(randomNumber);
+    const questionId = Math.floor(Math.random() * 11);
 
     try {
-        const content: string = window.rats.readFile(filePath!);
+        const content: string = await (await fetch(`./questions/${questionId}.json`)).text();
         const question: Question = JSON.parse(content);
 
         const element = document.getElementById('question');
