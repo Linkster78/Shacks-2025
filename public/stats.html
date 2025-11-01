@@ -52,12 +52,9 @@
       </video>
     </div>
     <script type="module">
-      // const good = parseInt(localStorage.getItem('goodAnswers'));
-      // const wrong = parseInt(localStorage.getItem('wrongAnswers'));
-      // const total = good + wrong;
-      const good = 10;
-      const wrong = 16;
-      const total = good + wrong;
+      const good = parseInt(localStorage.getItem('goodAnswers'));
+      const total = parseInt(localStorage.getItem('totalAnswers'));
+      const wrong = total - good;
 
       if (total > 0) {
         const percentGood = Math.round((good / total) * 100);
