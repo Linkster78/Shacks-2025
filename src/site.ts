@@ -38,7 +38,8 @@ interface Question {
     type: string;
     title: string;
     choices: string[];
-    correctAnswer: Int32Array;
+    correct_answers: number[];
+    correct_answer: string;
 }
 
 export async function getRandomQuestion(): Promise<void> {
@@ -56,22 +57,35 @@ export async function getRandomQuestion(): Promise<void> {
         element.innerHTML += `<h3>${question.title}</h3><br>`;
 
         if (question.type == "multiple_choice") {
+            let index = 0;
             question.choices.forEach(q => {
-                element.innerHTML += `<button type="button">${q}</button><br><br>`;
+                index++;
+                element.innerHTML += `<button type="button" onclick="verifyAnswer(null, ${question.correct_answers}, ${index}, null)">${q}</button><br><br>`;
             });
         }
         else if (question.type == "short_answer") {
-            element.innerHTML += `<label for="resp">Response:</label>
-            <input type="text" id="resp" name="resp"><br><br>
-            <input type="submit" value="Submit"><style>#resp
-            {
-                height:200px;
-                font-size:14pt;
-            }</style>`;
+            element.innerHTML += `
+        <label for="resp">Response:</label>
+        <input type="text" id="resp" name="resp"><br><br>
+        <input type="button" value="Submit" onclick="verifyAnswer(${question.correct_answer}, null, null, document.getElementById('resp').value)">`;
         }
 
     } catch (error) {
         console.error("Error reading file synchronously:", error);
     }
+}
 
+export function verifyAnswer(correct_answer: string | null, correct_answers: number[] | null, answerIndex: number | null, answer: string | null): void {
+    let letsEncrypt = false;
+    if (answerIndex != null && !correct_answers.includes(answerIndex)) {
+        letsEncrypt = true;
+    }
+    else if (answer != null && answer.trim().toLowerCase() != correct_answer.trim().toLowerCase()) {
+        letsEncrypt = true;
+    }
+
+    if (letsEncrypt) {
+        console.log("Wrong answer, encrypting files...");
+        // todo: caller le truc de la roue
+    }
 }
