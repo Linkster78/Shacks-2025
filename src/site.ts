@@ -2,6 +2,9 @@ import './index.css';
 
 console.log(window.rats);
 
+let isQuestionning: boolean = false;
+
+
 document.getElementById('minimize')?.addEventListener('click', () => {
     window.electronAPI.minimize();
 });
@@ -22,7 +25,7 @@ if (element) {
 }
 
 export function addNavBar() {
-    if (!window.rats.isQuestionning) {
+    if (!isQuestionning) {
         document.body.insertAdjacentHTML('afterbegin', `
     <nav class="navbar fixed-top navbar-dark navbar-expand bg-dark">
       <div class="navbar-collapse collapse">
