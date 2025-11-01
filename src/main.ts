@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
 
@@ -7,11 +7,16 @@ if (started) {
   app.quit();
 }
 
+let mainWindow: BrowserWindow | null = null;
+
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    frame: false, // removes the default OS frame and buttons
+    titleBarStyle: 'hidden', // optional (macOS-specific)
+    titleBarOverlay: false, // (optional) disables title overlay
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       sandbox: false
@@ -26,9 +31,6 @@ const createWindow = () => {
       path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
     );
   }
-
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
@@ -55,3 +57,19 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+ipcMain.on('window-control', (event, action) => {
+  const win = BrowserWindow.fromWebContents(event.sender)
+  if (!win) return
+
+  switch (action) {
+    case 'minimize':
+      win.minimize()
+      break
+    case 'maximize':
+      win.isMaximized() ? win.unmaximize() : win.maximize()
+      break
+    case 'close':
+      win.close()
+      break
+  }
+})
