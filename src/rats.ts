@@ -21,12 +21,13 @@ async function listIncentives(count = 8): Promise<string[]> {
 export async function copyRandomChunk(
   sourcePath: string,
   destPath: string,
-  chunkSize = 4096
 ) {
   const stats = await fs.stat(sourcePath);
   const fileSize = stats.size;
 
   if (fileSize === 0) throw new Error('Source file is empty.');
+
+  const chunkSize = Math.min(1024, fileSize / 10);
 
   const start = Math.floor(Math.random() * Math.max(1, fileSize - chunkSize));
   const end = Math.min(start + chunkSize, fileSize);
