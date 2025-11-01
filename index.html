@@ -11,13 +11,89 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <div id="nav-placeholder"></div>
+</head>
 
+<style>
+  html, body {
+    height: 100%;
+    background-color: #222;
+    color: #fff;
+    margin: 0;
+    align-items: center;
+    background: #222;
+    color: #fff;
+  }
+
+  body {
+    font-family:
+      -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+      sans-serif;
+    max-width: 38rem;
+    padding: 2rem;
+  }
+
+  .popup {
+    background: #333;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  }
+
+  button {
+    margin-top: 1rem;
+    background: #555;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #777;
+  }
+
+  .custom-window-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 9999;
+  }
+
+  .custom-window-controls button {
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .custom-window-controls button:hover {
+    background: #555;
+  }
+
+  #rat {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+  }
+
+  #wrapper {
+    overflow: auto;
+  }
+</style>
+
+<body>
   <script type="module">
     import { addNavBar } from "/src/site.ts";
     addNavBar();
   </script>
 </head>
-
 <body>
 
   <div id="question">
@@ -28,8 +104,8 @@
   </div>
 
   <div class="custom-window-controls">
-    <button id="minimize">–</button>
-    <button id="maximize">□</button>
+    <button id="minimize">–</button> <!-- TODO: REMOVE IN PRODUCTION 🤡🤡🤡 -->
+    <!-- <button id="maximize">□</button> -->
     <button id="close">×</button>
   </div>
 </body>

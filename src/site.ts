@@ -1,10 +1,8 @@
-
-import './index.css';
 import * as fs from 'fs';
 
 console.log(window.rats);
 
-let isQuestionning: boolean = false;
+const isQuestionning = false;
 
 
 document.getElementById('minimize')?.addEventListener('click', () => {

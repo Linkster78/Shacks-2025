@@ -1,7 +1,7 @@
 import { getFiles, getFilesNotEncr, sampleN } from "./helpers";
 import fs from 'fs';
 
-const ENCRYPTION_DIR: string = './to_encrypt';
+const ENCRYPTION_DIR = './to_encrypt';
 
 
 export interface Rats {
@@ -13,6 +13,7 @@ export interface Rats {
 
 async function listIncentives(count: number = 8): Promise<string[]> {
     const files = await getFilesNotEncr(ENCRYPTION_DIR);
+
     return sampleN(files, count);
 }
 
