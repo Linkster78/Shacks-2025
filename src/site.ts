@@ -18,12 +18,11 @@ document.getElementById('close')?.addEventListener('click', () => {
 });
 
 export function addNavBar() {
-    if (!isQuestionning) {
+    if (!window.rats.isTimerLaunch) {
         document.body.insertAdjacentHTML('afterbegin', `
     <nav class="navbar fixed-top navbar-dark navbar-expand bg-dark">
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li><a class="nav-item nav-link" href="">Main</a></li>
           <li><a class="nav-item nav-link" href="sniff.html">Sniff Sniff😢</a></li>
           <li><a class="nav-item nav-link" href="stats.html">Statistics</a></li>
         </ul>
