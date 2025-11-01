@@ -1,0 +1,11 @@
+{
+    "type": "multiple_choice",
+    "title": "On November 24th 2021, a vulnerability was discovered in a Java library that affected millions of systems. What was the CVE number assigned to this vulnerability?",
+    "choices": [
+        "CVE-2021-44228",
+        "CVE-2021-58236",
+        "CVE-2020-20117",
+        "CVE-2021-47219"
+    ],
+    "correct_answers": [0]
+}
