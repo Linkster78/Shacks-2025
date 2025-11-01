@@ -150,12 +150,14 @@
         wheel.appendChild(el);
       }
 
+      const resultFile = files[Math.floor(Math.random() * 12)];
+
       wheel.style.transition = 'none';
       wheel.style.transform = 'rotate(0deg)';
 
       setTimeout(() => {
         const newAngle = 1800 - 270 - 5 * 30 + (Math.random() - 0.5) * 30;
-        wheel.style.transition = 'transform 4s cubic-bezier(0, 0.5, 0.5, 1)';
+        wheel.style.transition = 'transform 8s cubic-bezier(0, 0.5, 0.5, 1)';
         wheel.style.transform = `rotate(${newAngle}deg)`;
       }, 10);
 
@@ -172,8 +174,8 @@
           confetti.setCount(0);
 
           Toastify({
-            text: 'you won or something!',
-            duration: 3000,
+            text: `Congratulations! ${resultFile.name} will now be encrypted.`,
+            duration: 5000,
             newWindow: true,
             close: false,
             gravity: 'bottom',
@@ -181,7 +183,7 @@
             stopOnFocus: true
           }).showToast();
         }, 10);
-      }, 4000);
+      }, 8000);
     })();
   </script>
 </body>
