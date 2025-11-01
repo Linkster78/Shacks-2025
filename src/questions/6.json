@@ -1,0 +1,11 @@
+{
+    "type": "multiple_choice",
+    "title": "We like rats, do you like rats? To prove it, tell us what RAT stands for.",
+    "choices": [
+        "Remote access trojan",
+        "Reloading all tacos",
+        "Randomized automata tomato",
+        "Rope and trebuchet"
+    ],
+    "correct_answers": [0]
+}
