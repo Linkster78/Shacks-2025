@@ -26,7 +26,6 @@ export function addNavBar() {
           <li><a class="nav-item nav-link" href="">Main</a></li>
           <li><a class="nav-item nav-link" href="sniff.html">Sniff Sniff😢</a></li>
           <li><a class="nav-item nav-link" href="stats.html">Statistics</a></li>
-          <li><a class="nav-item nav-link" href="roulette.html">Roulette</a></li>
         </ul>
       </div>
     </nav>
@@ -118,6 +117,10 @@ export function verifyAnswer(question: Question, answerIndex: number | null, ans
     }
     else {
         localStorage.setItem("goodAnswers", (parseInt(goodAnswers) + 1).toString());
+        document.getElementById("question").style.display = "none";
+        const yipee = document.getElementById("yipee");
+        yipee.innerHTML += "<h3>Good job queen!</h3>";
+        yipee.innerHTML += '<div id="bing"><img src="https://media1.tenor.com/m/pUNC06ehYBsAAAAC/erm-aksuali-veli.gif"></div>';
     }
     localStorage.setItem("totalAnswers", (parseInt(totalAnswers) + 1).toString());
     
