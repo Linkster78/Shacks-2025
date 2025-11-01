@@ -51,8 +51,8 @@ const createMainWindow = () => {
 
 const createFirstTimeWindow = () => {
   popupWindow = new BrowserWindow({
-    width: 400,
-    height: 300,
+    width: 690,
+    height: 420,
     frame: false,
     resizable: false,
     minimizable: false,
@@ -60,6 +60,7 @@ const createFirstTimeWindow = () => {
     alwaysOnTop: true,
     modal: true,
     parent: mainWindow ?? undefined,
+    transparent: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       sandbox: false,

