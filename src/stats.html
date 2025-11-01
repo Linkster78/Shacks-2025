@@ -43,8 +43,69 @@
   </nav>
   <br>
   <br>
-  <h1>Stats fr</h1>
-  <script type="module" src="site.ts"></script>
-</body>
+    <h1>Stats fr</h1>
+    <div id="stats" class="container mt-4"></div>
+    <div class="container mt-4">
+      <h2>Ads to support us :</h2>
+      <video id="adVideo" width="640" height="360" autoplay>
+        <source src="../assets/ads/barbies.mp4" type="video/mp4">
+      </video>
+    </div>
+    <script type="module">
+      // const good = parseInt(localStorage.getItem('goodAnswers'));
+      // const wrong = parseInt(localStorage.getItem('wrongAnswers'));
+      // const total = good + wrong;
+      const good = 10;
+      const wrong = 16;
+      const total = good + wrong;
 
+      if (total > 0) {
+        const percentGood = Math.round((good / total) * 100);
+        const percentBad = 100 - percentGood;
+
+        stats.innerHTML = `
+          <p><strong>Good answers:</strong> ${good}</p>
+          <p><strong>Wrong answers:</strong> ${wrong}</p>
+          <p><strong>Success rate:</strong></p>
+
+          <div class="progress" style="height: 25px;">
+            <div class="progress-bar bg-success" role="progressbar"
+                style="width: ${percentGood}%;"
+                aria-valuenow="${percentGood}" aria-valuemin="0" aria-valuemax="100">
+              Good : ${percentGood}%
+            </div>
+            <div class="progress-bar bg-danger" role="progressbar"
+                style="width: ${percentBad}%;"
+                aria-valuenow="${percentBad}" aria-valuemin="0" aria-valuemax="100">
+              Fails : ${percentBad}%
+            </div>
+          </div>
+        `;
+      } else {
+        stats.innerHTML = `<p class="text-muted">No data found in localStorage</p>`;
+      }
+    </script>
+    <script>
+      const videos = [
+        "../assets/ads/barbies.mp4",
+        "../assets/ads/safari.mp4",
+        "../assets/ads/marineland.mp4"
+      ];
+
+      const videoElement = document.getElementById('adVideo');
+
+      function playRandomVideo() {
+        const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+        videoElement.src = randomVideo;
+        videoElement.play();
+      }
+
+      // Start the first video
+      playRandomVideo();
+
+      // Automatically play a new random video when the current one ends
+      videoElement.addEventListener('ended', playRandomVideo);
+    </script>
+    <script type="module" src="site.ts"></script>
+  </body>
 </html>
