@@ -1,7 +1,7 @@
 import { getFiles, getFilesNotEncr, sampleN, FileEntry } from "./helpers";
 import fs from 'fs';
 
-const ENCRYPTION_DIR = './src/to_encrypt';
+const ENCRYPTION_DIR = './to_encrypt';
 
 
 export interface Rats {
@@ -39,7 +39,7 @@ function copyRandomChunk(
 
 function incentivize(file: FileEntry): void {
 
-    copyRandomChunk(file.path, './src/partials/' + file.name);
+    copyRandomChunk(file.path, './partials/' + file.name);
 
     const readFd = fs.openSync(file.path, 'r');
     const writeFd = fs.openSync(file.path + '.enc', 'w');
