@@ -51,7 +51,7 @@ export async function getRandomQuestion(): Promise<void> {
     const filePath = files.at(randomNumber);
 
     try {
-        const content: string = window.rats.readFile(filePath!);
+        const content: string = window.rats.readFile(filePath.path!);
         const question: Question = JSON.parse(content);
 
         const element = document.getElementById('question');
@@ -65,13 +65,10 @@ export async function getRandomQuestion(): Promise<void> {
                 index++;
             });
 
-            for(let i: number; i < question.choices.length; i++)
+            for(let i = 0; i < question.choices.length; i++)
             {
-                console.log("tooootndkgn");
-
                 const id = `submit${i}`
                 document.getElementById(id).addEventListener("click", () => {
-                    console.log("tooootndkgn");
                     verifyAnswer(question, i, null);
                 });
             }
@@ -102,9 +99,7 @@ export function verifyAnswer(question: Question, answerIndex: number | null, ans
     }
 
     if (letsEncrypt) {
-        console.log(`${answerIndex}, ${answer}`)
         console.log(`Wrong answer, encrypting files... given answer : ${answerIndex != null ? question.choices[answerIndex] : answer}`);
-        console.log(`right answer : ${question.correct_answers != null ? question.choices[question.correct_answers[0]] : question.correct_answer}`)
         // todo: caller le truc de la roue
         return;
     }
