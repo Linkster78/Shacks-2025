@@ -56,11 +56,12 @@ export async function getRandomQuestion(): Promise<void> {
             let index = 0;
             question.choices.forEach(q => {
                 element.innerHTML += `<button type="button" id="submit${index}">${q}</button><br><br>`;
-
+                
                 index++;
             });
 
-            for (let i = 0; i < question.choices.length; i++) {
+            for(let i = 0; i < question.choices.length; i++)
+            {
                 const id = `submit${i}`
                 document.getElementById(id).addEventListener("click", () => {
                     verifyAnswer(question, i, null);
@@ -69,7 +70,8 @@ export async function getRandomQuestion(): Promise<void> {
         }
         else if (question.type == "short_answer") {
             element.innerHTML += `
-        <textarea name="resp" rows="10" cols="120" placeholder="Response..."></textarea><br><br>
+        <label for="resp">Response:</label>
+        <input type="text" id="resp" name="resp"><br><br>
         <input type="button" type="submit" value="Submit" id="submit">`;
 
             document.getElementById('submit').addEventListener('click', () => {
@@ -121,6 +123,6 @@ export function verifyAnswer(question: Question, answerIndex: number | null, ans
         yipee.innerHTML += '<div id="bing"><img src="https://media1.tenor.com/m/pUNC06ehYBsAAAAC/erm-aksuali-veli.gif"></div>';
     }
     localStorage.setItem("totalAnswers", (parseInt(totalAnswers) + 1).toString());
-
+    
     console.log("good, encrypting files...");
 }
