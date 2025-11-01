@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-import { getFiles, getFilesNotEncr, sampleN, FileEntry } from "./helpers";
+import { getFiles, sampleN, FileEntry } from "./helpers";
 import { promises as fs } from 'node:fs';
 import { Buffer } from 'node:buffer';
 import { join } from 'node:path';
-=======
-import { getFiles, sampleN, FileEntry } from "./helpers";
-import fs from 'fs';
->>>>>>> 1b5937b (FIXED IT 🗣️🗣️🗣️🗣️🗣️🗣️🗣️)
 
 const ENCRYPTION_DIR = './';
 
