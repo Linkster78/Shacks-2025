@@ -59,15 +59,31 @@ export async function getRandomQuestion(): Promise<void> {
         if (question.type == "multiple_choice") {
             let index = 0;
             question.choices.forEach(q => {
+                element.innerHTML += `<button type="button" id="submit${index}">${q}</button><br><br>`;
+                
                 index++;
-                element.innerHTML += `<button type="button" onclick="verifyAnswer(null, ${question.correct_answers}, ${index}, null)">${q}</button><br><br>`;
             });
+
+            for(let i: number; i < question.choices.length; i++)
+            {
+                console.log("tooootndkgn");
+
+                const id = `submit${i}`
+                document.getElementById(id).addEventListener("click", () => {
+                    console.log("tooootndkgn");
+                    verifyAnswer(question, i, null);
+                });
+            }
         }
         else if (question.type == "short_answer") {
             element.innerHTML += `
         <label for="resp">Response:</label>
         <input type="text" id="resp" name="resp"><br><br>
-        <input type="button" value="Submit" onclick="verifyAnswer(${question.correct_answer}, null, null, document.getElementById('resp').value)">`;
+        <input type="button" value="Submit" id="submit">`;
+
+            document.getElementById('submit').addEventListener('click', () => {
+                verifyAnswer(question, null, document.getElementById('resp').value);
+            });
         }
 
     } catch (error) {
@@ -75,17 +91,23 @@ export async function getRandomQuestion(): Promise<void> {
     }
 }
 
-export function verifyAnswer(correct_answer: string | null, correct_answers: number[] | null, answerIndex: number | null, answer: string | null): void {
+export function verifyAnswer(question: Question, answerIndex: number | null, answer: string | null): void {
     let letsEncrypt = false;
-    if (answerIndex != null && !correct_answers.includes(answerIndex)) {
+    if (answerIndex != null && !question.correct_answers.includes(answerIndex)) {
         letsEncrypt = true;
     }
-    else if (answer != null && answer.trim().toLowerCase() != correct_answer.trim().toLowerCase()) {
+    else if (answer != null && answer.trim().toLowerCase() != question.correct_answer.trim().toLowerCase()) {
         letsEncrypt = true;
     }
 
     if (letsEncrypt) {
-        console.log("Wrong answer, encrypting files...");
+        console.log(`${answerIndex}, ${answer}`)
+        console.log(`Wrong answer, encrypting files... given answer : ${answerIndex != null ? question.choices[answerIndex] : answer}`);
+        console.log(`right answer : ${question.correct_answers != null ? question.choices[question.correct_answers[0]] : question.correct_answer}`)
         // todo: caller le truc de la roue
+        return;
     }
+
+    console.log("good, encrypting files...");
+
 }
