@@ -6,25 +6,35 @@ import { MakerRpm } from '@electron-forge/maker-rpm';
 import { VitePlugin } from '@electron-forge/plugin-vite';
 import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
+import path from 'path';
 
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
+    icon: path.resolve(__dirname, 'assets/icons/app'), // 👈 No extension
   },
   rebuildConfig: {},
   makers: [
-    new MakerSquirrel({}),
-    new MakerZIP({}, ['darwin']),
-    new MakerRpm({}),
-    new MakerDeb({}),
+    new MakerSquirrel({
+      name: 'RATS',
+      setupIcon: path.resolve(__dirname, 'assets/icons/app.ico'), // Windows installer icon
+    }),
+    new MakerZIP({}, ['darwin']), // macOS .zip
+    new MakerRpm({
+      options: {
+        icon: path.resolve(__dirname, 'assets/icons/app.png'), // Linux RPM icon
+      },
+    }),
+    new MakerDeb({
+      options: {
+        icon: path.resolve(__dirname, 'assets/icons/app.png'), // Linux DEB icon
+      },
+    }),
   ],
   plugins: [
     new VitePlugin({
-      // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.
-      // If you are familiar with Vite configuration, it will look really familiar.
       build: [
         {
-          // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
           entry: 'src/main.ts',
           config: 'vite.main.config.ts',
           target: 'main',
@@ -42,8 +52,6 @@ const config: ForgeConfig = {
         },
       ],
     }),
-    // Fuses are used to enable/disable various Electron functionality
-    // at package time, before code signing the application
     new FusesPlugin({
       version: FuseVersion.V1,
       [FuseV1Options.RunAsNode]: false,

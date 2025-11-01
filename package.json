@@ -2,7 +2,6 @@
   "name": "rats",
   "productName": "rats",
   "version": "1.0.0",
-  "description": "My Electron application description",
   "main": ".vite/build/main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -13,10 +12,9 @@
   },
   "keywords": [],
   "author": {
-    "name": "Julien Champoux",
-    "email": "champoux.julien@gmail.com"
+    "name": "goonspirit"
   },
-  "license": "MIT",
+  "description": "RATS aka Randomized Awareness Training",
   "devDependencies": {
     "@electron-forge/cli": "^7.10.2",
     "@electron-forge/maker-deb": "^7.10.2",
