@@ -1,0 +1,11 @@
+{
+    "type": "multiple_choice",
+    "title": "Unfortunately, your bike has just been stolen. You should have used...",
+    "choices": [
+        "A bike lock",
+        "Public transport",
+        "A friendly note",
+        "A less expensive bike"
+    ],
+    "correct_answers": [0, 1]
+}
