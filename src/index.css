@@ -31,3 +31,13 @@ body {
 .custom-window-controls button:hover {
   background: #555;
 }
+
+#rat {
+  position:fixed;
+  top: 0px;
+  right: 0px;
+}
+
+#wrapper{
+    overflow:auto;
+}
