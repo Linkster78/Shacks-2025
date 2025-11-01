@@ -150,13 +150,14 @@
         wheel.appendChild(el);
       }
 
-      const resultFile = files[Math.floor(Math.random() * 12)];
+      const resultId = Math.floor(Math.random() * 12);
+      const resultFile = files[resultId];
 
       wheel.style.transition = 'none';
       wheel.style.transform = 'rotate(0deg)';
 
       setTimeout(() => {
-        const newAngle = 1800 - 270 - 5 * 30 + (Math.random() - 0.5) * 30;
+        const newAngle = 1800 - 270 - resultId * 30 + (Math.random() - 0.5) * 30;
         wheel.style.transition = 'transform 8s cubic-bezier(0, 0.5, 0.5, 1)';
         wheel.style.transform = `rotate(${newAngle}deg)`;
       }, 10);

