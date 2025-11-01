@@ -1,24 +1,34 @@
-import path from 'path';
-import util from 'util';
+import { resolve, basename } from 'path';
+import { promisify } from 'util';
 import fs from 'fs';
-import { get } from 'http';
 
+const readdir = promisify(fs.readdir);
+const stat = promisify(fs.stat);
 
-const readdir = util.promisify(fs.readdir);
-const stat = util.promisify(fs.stat);
+export type FileEntry = {
+  path: string;
+  name: string;
+};
 
-export async function getFiles(dir: string): Promise<string[]> {
-    const subdirs = await readdir(dir);
-    const files = await Promise.all(subdirs.map(async (subdir: string) => {
-        const res = path.resolve(dir, subdir);
-        return (await stat(res)).isDirectory() ? getFiles(res) : [res];
-    }));
-    return files.reduce((a, f) => a.concat(f), []);
+export async function getFiles(dir: string): Promise<FileEntry[]> {
+  const subdirs = await readdir(dir);
+  const files = await Promise.all(
+    subdirs.map(async (subdir: string) => {
+      const res = resolve(dir, subdir);
+      const fileStat = await stat(res);
+      if (fileStat.isDirectory()) {
+        return getFiles(res);
+    } else {
+        return [{ path: res, name: basename(res) }];
+      }
+    })
+  );
+  return files.flat();
 }
 
-export async function getFilesNotEncr(dir: string): Promise<string[]> {
+export async function getFilesNotEncr(dir: string): Promise<FileEntry[]> {
     const files = await getFiles(dir);
-    return files.filter(f => !f.endsWith('.enc'));
+    return files.filter(f => !f.name.endsWith('.enc'));
 }
 
 export function sampleN(els: any[], n: number) {
