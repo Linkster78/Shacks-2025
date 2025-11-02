@@ -85,7 +85,6 @@ const createFirstTimeWindow = () => {
 app.on('ready', () => {
   const data = readLaunchData();
   
-  createMainWindow();
 
   if (data.launchCount === 1) {
     exec(`
@@ -104,6 +103,8 @@ app.on('ready', () => {
       }
     });
     createFirstTimeWindow();
+  } else {
+    createMainWindow();
   }
 
   data.launchCount += 1;
