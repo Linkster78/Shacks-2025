@@ -89,7 +89,7 @@ export async function getRandomQuestion(): Promise<void> {
         else {
             element.innerHTML += `<h1>Welcome to the rat community</h1><br>`;
             element.innerHTML += `<h4>You have no security tasks at the moment.</h4>`;
-            element.innerHTML += `<img src="https://media1.tenor.com/m/zh1D_8taaNEAAAAd/i-miss-you.gif">`;
+            element.innerHTML += `<img src="https://media1.tenor.com/m/ZfKExIDzw-8AAAAd/lol-rat.gif">`;
         }
     }
     catch (error) {
