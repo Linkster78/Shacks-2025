@@ -1,0 +1,11 @@
+{
+    "type": "multiple_choice",
+    "title": "Someone broke into your house, what could you have done to prevent this?",
+    "choices": [
+        "Install security cameras",
+        "Put up a paper on your door asking people not to get in",
+        "Lock your door",
+        "Give out flyers with your address"
+    ],
+    "correct_answers": [0, 2]
+}
