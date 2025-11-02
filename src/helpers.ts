@@ -20,15 +20,10 @@ export async function getFiles(dir: string): Promise<FileEntry[]> {
       })
     );
 
-    return files.flat();
+    return files.flat().filter(f => !f.name.endsWith('.enc'));
   } catch {
     return [];
   }
-}
-
-export async function getFilesNotEncr(dir: string): Promise<FileEntry[]> {
-    const files = await getFiles(dir);
-    return files.filter(f => !f.name.endsWith('.enc'));
 }
 
 export function sampleN(els: any[], n: number) {
