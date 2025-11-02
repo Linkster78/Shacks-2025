@@ -16,10 +16,10 @@ async function listIncentives(count = 8): Promise<string[]> {
 }
 
 export async function copyRandomChunk(
-  sourcePath: string,
+  file: FileEntry,
   chunkSize = 512
 ) {
-  const stats = await fs.stat(sourcePath);
+  const stats = await fs.stat(file.path);
   const fileSize = stats.size;
 
   if (fileSize === 0) throw new Error('Source file is empty.');
@@ -29,15 +29,15 @@ export async function copyRandomChunk(
 
   const buffer = Buffer.alloc(end - start);
 
-  const handle = await fs.open(sourcePath, 'r');
+  const handle = await fs.open(file.path, 'r');
   await handle.read(buffer, 0, buffer.length, start);
   await handle.close();
 
-  localStorage.setItem('partial_' + basename(sourcePath), buffer.toString('base64'));
+  localStorage.setItem('partial_' + file.name, buffer.toString('base64'));
 }
 
 async function incentivize(file: FileEntry): Promise<void> {
-  await copyRandomChunk(file.path);
+  await copyRandomChunk(file);
   if(!isHardcore) return;
 
   const readHandle = await fs.open(file.path, 'r');
