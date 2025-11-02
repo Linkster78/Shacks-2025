@@ -35,7 +35,7 @@ interface Question {
 }
 
 export async function getRandomQuestion(): Promise<void> {
-    const questionId = Math.floor(Math.random() * 11);
+    const questionId = Math.floor(Math.random() * 10) + 1;
 
     try {
         const content: string = await (await fetch(`./questions/${questionId}.json`)).text();
@@ -130,6 +130,7 @@ export function verifyAnswer(question: Question, answerIndex: number | null, ans
         window.location.href = "roulette.html";
     }
     else {
+        console.log("good, encrypting files...");
         localStorage.setItem("goodAnswers", (parseInt(goodAnswers) + 1).toString());
         document.getElementById("question").style.display = "none";
         const yipee = document.getElementById("yipee");
@@ -137,6 +138,4 @@ export function verifyAnswer(question: Question, answerIndex: number | null, ans
         yipee.innerHTML += '<div id="bing"><img src="https://media1.tenor.com/m/pUNC06ehYBsAAAAC/erm-aksuali-veli.gif"></div>';
     }
     localStorage.setItem("totalAnswers", (parseInt(totalAnswers) + 1).toString());
-
-    console.log("good, encrypting files...");
 }

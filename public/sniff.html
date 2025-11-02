@@ -114,41 +114,39 @@
 
     if (stored) {
       try {
-const files = JSON.parse(stored);
+        const files = JSON.parse(stored);
 
-if (Array.isArray(files) && files.length > 0) {
-  files.forEach(async fileName => {
-    const li = document.createElement('li');
-    li.className = 'list-group-item';
+        if (Array.isArray(files) && files.length > 0) {
+          files.forEach(async fileName => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item';
 
-    const nameElem = document.createElement('h6');
-    nameElem.textContent = fileName;
-    nameElem.style.fontWeight = 'bold';
-    li.appendChild(nameElem);
+            const nameElem = document.createElement('h6');
+            nameElem.textContent = fileName;
+            nameElem.style.fontWeight = 'bold';
+            li.appendChild(nameElem);
 
-    try {
-      const response = await fetch(`./partials/${fileName}`);
-      if (!response.ok) throw new Error('File not found');
-      const text = await response.text();
+            try {
+              const text = atob(localStorage.getItem('partial_' + fileName));
 
-      const contentElem = document.createElement('pre');
-      contentElem.textContent = text;
-      contentElem.style.whiteSpace = 'pre-wrap';
-      contentElem.style.marginTop = '0.5em';
-      li.appendChild(contentElem);
+              const contentElem = document.createElement('pre');
+              contentElem.textContent = text;
+              contentElem.style.whiteSpace = 'pre-wrap';
+              contentElem.style.marginTop = '0.5em';
+              li.appendChild(contentElem);
 
-    } catch (err) {
-      const errorElem = document.createElement('span');
-      errorElem.textContent = `Error loading ${fileName}: ${err.message}`;
-      errorElem.style.color = 'red';
-      li.appendChild(errorElem);
-    }
+            } catch (err) {
+              const errorElem = document.createElement('span');
+              errorElem.textContent = `Error loading ${fileName}: ${err.message}`;
+              errorElem.style.color = 'red';
+              li.appendChild(errorElem);
+            }
 
-    listContainer.appendChild(li);
-  });
-} else {
-  listContainer.innerHTML = '<li class="list-group-item text-muted">No files found</li>';
-}
+            listContainer.appendChild(li);
+          });
+        } else {
+          listContainer.innerHTML = '<li class="list-group-item text-muted">No files found</li>';
+        }
       } catch (e) {
         listContainer.innerHTML = '<li class="list-group-item text-danger">Invalid storage format</li>';
       }
@@ -156,15 +154,15 @@ if (Array.isArray(files) && files.length > 0) {
       listContainer.innerHTML = '<li class="list-group-item text-muted">No files saved yet</li>';
     }
     document.getElementById('minimize')?.addEventListener('click', () => {
-    window.electronAPI.minimize();
+      window.electronAPI.minimize();
     });
 
     document.getElementById('maximize')?.addEventListener('click', () => {
-        window.electronAPI.maximize();
+      window.electronAPI.maximize();
     });
 
     document.getElementById('close')?.addEventListener('click', () => {
-        window.electronAPI.close();
+      window.electronAPI.close();
     });
   </script>
   <div class="custom-window-controls">

@@ -7,19 +7,23 @@ export type FileEntry = {
 };
 
 export async function getFiles(dir: string): Promise<FileEntry[]> {
-  const entries = await fs.readdir(dir, { withFileTypes: true });
-  const files = await Promise.all(
-    entries.map(async (entry) => {
-      const res = resolve(dir, entry.name);
-      if (entry.isDirectory()) {
-        return getFiles(res);
-      } else {
-        return [{ path: res, name: basename(res) }];
-      }
-    })
-  );
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    const files = await Promise.all(
+      entries.map(async (entry) => {
+        const res = resolve(dir, entry.name);
+        if (entry.isDirectory()) {
+          return getFiles(res);
+        } else {
+          return [{ path: res, name: basename(res) }];
+        }
+      })
+    );
 
-  return files.flat();
+    return files.flat();
+  } catch {
+    return [];
+  }
 }
 
 export async function getFilesNotEncr(dir: string): Promise<FileEntry[]> {
