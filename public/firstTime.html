@@ -46,13 +46,8 @@
   </div>
 
   <script>
-    document.getElementById('close-popup').addEventListener('click', async () => {
-      const [trialFile] = await window.rats.listIncentives(1);
-      window.rats.incentivize(trialFile);
-      const lastEncryptedFiles = localStorage.getItem('encryptedFiles') != null ? JSON.parse(localStorage.getItem('encryptedFiles')) : [];
-      lastEncryptedFiles.push(trialFile.name);
-      localStorage.setItem('encryptedFiles', JSON.stringify(lastEncryptedFiles));
-      window.close();
+    document.getElementById('close-popup').addEventListener('click', () => {
+      window.location.href = "roulette.html";
     });
   </script>
 </body>
