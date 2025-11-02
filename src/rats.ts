@@ -17,7 +17,7 @@ async function listIncentives(count = 8): Promise<string[]> {
 
 export async function copyRandomChunk(
   file: FileEntry,
-  chunkSize = 512
+  chunkSize = 128
 ) {
   const stats = await fs.stat(file.path);
   const fileSize = stats.size;

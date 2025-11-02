@@ -17,7 +17,9 @@ const config: ForgeConfig = {
   makers: [
     new MakerSquirrel({
       name: 'RATS',
-      setupIcon: path.resolve(__dirname, 'assets/icons/app.ico'), // Windows installer icon
+      setupExe: 'RATS-Setup.exe',
+      setupIcon: path.resolve(__dirname, 'assets/icons/app.ico'),
+      noMsi: true,
     }),
     new MakerZIP({}, ['darwin']), // macOS .zip
     new MakerRpm({
