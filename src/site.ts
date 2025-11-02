@@ -49,7 +49,6 @@ export async function getRandomQuestion(): Promise<void> {
         const question: Question = JSON.parse(content);
 
         const element = document.getElementById('question');
-        element.innerHTML += `<h3>${question.title}</h3><br>`;
 
         function shuffleArray<T>(array: T[]): T[] {
             const arr = [...array]; // make a copy so original isn’t modified
@@ -60,38 +59,48 @@ export async function getRandomQuestion(): Promise<void> {
             return arr;
         }
 
-        if (question.type == "multiple_choice") {
+        if (window.rats.isTimerLaunch) {
+            element.innerHTML += `<h3>${question.title}</h3><br>`;
 
-            const choicesWithIndex = question.choices.map((choice, idx) => ({ choice, idx }));
-            const shuffledChoices = shuffleArray(choicesWithIndex);
+            if (question.type == "multiple_choice") {
 
-            shuffledChoices.forEach(q => {
-                element.innerHTML += `<button type="button" id="submit${q.idx}">${q.choice}</button><br><br>`;
-            });
+                const choicesWithIndex = question.choices.map((choice, idx) => ({ choice, idx }));
+                const shuffledChoices = shuffleArray(choicesWithIndex);
 
-            for(let i = 0; i < question.choices.length; i++)
-            {
-                const item = shuffledChoices[i];
-                const id = `submit${item.idx}`
-                document.getElementById(id).addEventListener("click", () => {
-                    verifyAnswer(question, item.idx, null);
+                shuffledChoices.forEach(q => {
+                    element.innerHTML += `<button type="button" id="submit${q.idx}">${q.choice}</button><br><br>`;
                 });
+
+                for (let i = 0; i < question.choices.length; i++) {
+                    const item = shuffledChoices[i];
+                    const id = `submit${item.idx}`
+                    document.getElementById(id).addEventListener("click", () => {
+                        verifyAnswer(question, item.idx, null);
+                    });
+                }
             }
-        }
-        else if (question.type == "short_answer") {
-            element.innerHTML += `
+            else if (question.type == "short_answer") {
+                element.innerHTML += `
         <label for="resp">Response:</label>
         <input type="text" id="resp" name="resp"><br><br>
         <input type="button" type="submit" value="Submit" id="submit">`;
 
-            document.getElementById('submit').addEventListener('click', () => {
-                verifyAnswer(question, null, document.getElementById('resp').value);
-            });
-        }
+                document.getElementById('submit').addEventListener('click', () => {
+                    verifyAnswer(question, null, document.getElementById('resp').value);
+                });
+            }
 
-    } catch (error) {
+        }
+        else {
+            element.innerHTML += `<h1>Welcome to the rat community</h1><br>`;
+            element.innerHTML += `<h4>You have no security tasks at the moment.</h4>`;
+            element.innerHTML += `<img src="https://media1.tenor.com/m/zh1D_8taaNEAAAAd/i-miss-you.gif">`;
+        }
+    }
+    catch (error) {
         console.error("Error reading file synchronously:", error);
     }
+
 }
 
 export function getAnswers() {
@@ -133,6 +142,6 @@ export function verifyAnswer(question: Question, answerIndex: number | null, ans
         yipee.innerHTML += '<div id="bing"><img src="https://media1.tenor.com/m/pUNC06ehYBsAAAAC/erm-aksuali-veli.gif"></div>';
     }
     localStorage.setItem("totalAnswers", (parseInt(totalAnswers) + 1).toString());
-    
+
     console.log("good, encrypting files...");
 }
