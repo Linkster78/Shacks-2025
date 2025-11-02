@@ -1,10 +1,3 @@
-import * as fs from 'fs';
-
-console.log(window.rats);
-
-const isQuestionning = false;
-
-
 document.getElementById('minimize')?.addEventListener('click', () => {
     window.electronAPI.minimize();
 });

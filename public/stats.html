@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Hello World!</title>
+  <title>Stats</title>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -28,6 +28,44 @@
     max-width: 38rem;
     padding: 2rem;
   }
+
+  button {
+    margin-top: 1rem;
+    background: #555;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #777;
+  }
+
+  .custom-window-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 9999;
+  }
+
+  .custom-window-controls button {
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .custom-window-controls button:hover {
+    background: #555;
+  }
 </style>
 
 <body>
@@ -51,6 +89,17 @@
       </video>
     </div>
     <script type="module">
+      document.getElementById('minimize')?.addEventListener('click', () => {
+    window.electronAPI.minimize();
+    });
+
+    document.getElementById('maximize')?.addEventListener('click', () => {
+        window.electronAPI.maximize();
+    });
+
+    document.getElementById('close')?.addEventListener('click', () => {
+        window.electronAPI.close();
+    });
       const good = parseInt(localStorage.getItem('goodAnswers'));
       const total = parseInt(localStorage.getItem('totalAnswers'));
       const wrong = total - good;
@@ -104,5 +153,10 @@
       videoElement.addEventListener('ended', playRandomVideo);
     </script>
     <script type="module" src="site.ts"></script>
+    <div class="custom-window-controls">
+      <button id="minimize">–</button> <!-- TODO: REMOVE IN PRODUCTION 🤡🤡🤡 -->
+      <!-- <button id="maximize">□</button> -->
+      <button id="close">×</button>
+    </div>
   </body>
 </html>
