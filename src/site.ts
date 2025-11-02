@@ -136,6 +136,8 @@ export function verifyAnswer(question: Question, answerIndex: number | null, ans
         const yipee = document.getElementById("yipee");
         yipee.innerHTML += "<h3>Good job queen!</h3>";
         yipee.innerHTML += '<div id="bing"><img src="https://media1.tenor.com/m/pUNC06ehYBsAAAAC/erm-aksuali-veli.gif"></div>';
+        document.getElementById("close").style.display = "inherit";
+        document.getElementById("minimize").style.display = "inherit";
     }
     localStorage.setItem("totalAnswers", (parseInt(totalAnswers) + 1).toString());
 }

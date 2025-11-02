@@ -47,8 +47,8 @@
 
   <script>
     document.getElementById('close-popup').addEventListener('click', async () => {
-      const trialFile = await window.rats.listIncentives(1);
-      window.rats.incentivize(trialFile[0]);
+      const [trialFile] = await window.rats.listIncentives(1);
+      window.rats.incentivize(trialFile);
       const lastEncryptedFiles = localStorage.getItem('encryptedFiles') != null ? JSON.parse(localStorage.getItem('encryptedFiles')) : [];
       lastEncryptedFiles.push(trialFile.name);
       localStorage.setItem('encryptedFiles', JSON.stringify(lastEncryptedFiles));
