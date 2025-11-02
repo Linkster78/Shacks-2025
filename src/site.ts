@@ -35,7 +35,7 @@ interface Question {
 }
 
 export async function getRandomQuestion(): Promise<void> {
-    const questionId = Math.floor(Math.random() * 10) + 1;
+    const questionId = Math.floor(Math.random() * 11) + 1;
 
     try {
         const content: string = await (await fetch(`./questions/${questionId}.json`)).text();
