@@ -1,7 +1,7 @@
 # RATS
 
-## How to use on Windows
-Just download the Installer on Windows and you're ready.
+## Comment utiliser avec Windows
+Télécherger l'installateur, l'exécuter et c'est fini.
 
 ## Mise en situation
 Plusieurs personnes souhaitent s’y mettre, mais le manque de motivation est souvent problématique. Plusieurs commencent, mais ne se forcent pas à réellement apprendre. C’est ce problème spécifiquement que notre solution vise à résoudre.
