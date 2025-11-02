@@ -83,6 +83,8 @@ export async function getRandomQuestion(): Promise<void> {
                 });
             }
 
+            document.getElementById("close").style.display = "none";
+            document.getElementById("minimize").style.display = "none";
         }
         else {
             element.innerHTML += `<h1>Welcome to the rat community</h1><br>`;
